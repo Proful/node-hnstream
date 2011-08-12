@@ -1,4 +1,5 @@
 express = require("express")
+io = require("socket.io").listen(app)
 app = module.exports = express.createServer()
 app.configure ->
   app.set "views", __dirname + "/views"
@@ -22,3 +23,9 @@ app.get "/", (req, res) ->
 
 app.listen 3000
 console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env
+
+
+io.sockets.on 'connection',(socket) ->
+  socket.emit 'news', {hello:'world'}
+  socket.on 'my other event',(data) ->
+    console.log data
