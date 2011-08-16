@@ -1,6 +1,13 @@
 express = require("express")
-io = require("socket.io").listen(app)
+# app should be initialize before using socket.io
+# because of this sily mistake I spent countless hours :)
 app = module.exports = express.createServer()
+io = require("socket.io").listen(app)
+
+app.listen 80
+console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env
+
+
 app.configure ->
   app.set "views", __dirname + "/views"
   app.set "view engine", "jade"
@@ -20,10 +27,6 @@ app.configure "production", ->
 
 app.get "/", (req, res) ->
   res.render "index", title: "Express"
-
-app.listen 4000
-console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env
-
 
 io.sockets.on 'connection',(socket) ->
   socket.emit 'news', {hello:'world'}
