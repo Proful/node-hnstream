@@ -22,10 +22,10 @@ template = (id,data) ->
   source = source.replace(/\\n/g,"")
   template = Handlebars.compile(source)
   html = template(data)
-  $('body').append(html)
+  $('body').prepend(html)
 
 # Streaming on front page news
-socket.on 'news', (data) ->
+# socket.on 'news', (data) ->
   # template '#entry-template', data
 
 # Streaming on comments

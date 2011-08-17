@@ -23,9 +23,8 @@
     source = source.replace(/\\n/g, "");
     template = Handlebars.compile(source);
     html = template(data);
-    return $('body').append(html);
+    return $('body').prepend(html);
   };
-  socket.on('news', function(data) {});
   socket.on('comments', function(data) {
     var html, source;
     console.log(data);

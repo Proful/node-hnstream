@@ -35,9 +35,29 @@ app.get "/", (req, res) ->
 # On retrieval emit result to the client.
 io.sockets.on 'connection',(socket) ->
   # front page news
+  ###
   hn.get "page", (result) ->
     socket.emit 'news', result
+  ###
 
+  commentId = 0
+
+  hn.get "newcomments", (result) ->
+    commentId = result['comments'][0]['id']
+    socket.emit 'comments', result
+
+  getNewComments = ()->
+    console.log "getNewComments called..." + commentId
+    hn.get "newcomments", (result) ->
+      if commentId != 0
+        result = hn.rmOldComments result,commentId,null
+      if result['comments'][0]
+        commentId = result['comments'][0]['id']
+      socket.emit 'comments', result
+
+  setInterval getNewComments,5000
   # new comments
+  ###
   hn.get "newcomments", (result) ->
     socket.emit 'comments', result
+  ###
