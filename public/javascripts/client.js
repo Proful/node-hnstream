@@ -3,7 +3,8 @@
     var context, html, source, template;
     source = $('#entry-template').html();
     console.log(source);
-    source = source.replace('/n', '');
+    source = source.replace(/\\n/g, "");
+    console.log(source);
     template = Handlebars.compile(source);
     context = {
       title: "handle bar title",
