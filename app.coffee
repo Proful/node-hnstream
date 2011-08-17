@@ -10,11 +10,8 @@ console.log "Express server listening on port %d in %s mode", app.address().port
 
 app.configure ->
   app.set "views", __dirname + "/views"
-  app.set "views options", {layout: false}
-  app.register '.html', {
-    compile: (str,options) ->
-      (locals) -> str
-  }
+  app.set "view engine", "jade"
+  app.register ".html",require("jade")
   app.use express.bodyParser()
   app.use express.methodOverride()
   app.use app.router
@@ -36,6 +33,9 @@ app.get "/", (req, res) ->
 # Establishes connection with client
 # Retrieve hacker news front page
 # On retrieval emit result to the client.
+###
 io.sockets.on 'connection',(socket) ->
   hn.get "page", (result) ->
+    console.log result
     socket.emit 'news', result
+###
