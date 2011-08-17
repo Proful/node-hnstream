@@ -1,3 +1,4 @@
+###
 $ ->
   # for testing
   result = $('#json-test').html()
@@ -15,12 +16,25 @@ $ ->
 ###
 socket = io.connect "http://localhost"
 
-socket.on 'news', (data) ->
-  console.log data
-  source = $('#entry-template').html()
-  source = source.replace('/n','')
+template = (id,data) ->
+  # console.log "id: " + id
+  source = $(id).html()
+  source = source.replace(/\\n/g,"")
   template = Handlebars.compile(source)
-  context = {title: "handle bar title",body: "handlebar body"}
-  html = template(context)
+  html = template(data)
   $('body').append(html)
-###
+
+# Streaming on front page news
+socket.on 'news', (data) ->
+  # template '#entry-template', data
+
+# Streaming on comments
+socket.on 'comments', (data) ->
+  console.log data
+  # Bug: invoking the template function not able to render the template.
+  # template '#comment-template', data
+  source = $("#comment-template").html()
+  source = source.replace(/\\n/g,"")
+  template = Handlebars.compile(source)
+  html = template(data)
+  $('body').append(html)

@@ -33,9 +33,11 @@ app.get "/", (req, res) ->
 # Establishes connection with client
 # Retrieve hacker news front page
 # On retrieval emit result to the client.
-###
 io.sockets.on 'connection',(socket) ->
+  # front page news
   hn.get "page", (result) ->
-    console.log result
     socket.emit 'news', result
-###
+
+  # new comments
+  hn.get "newcomments", (result) ->
+    socket.emit 'comments', result

@@ -1,26 +1,38 @@
 (function() {
-  $(function() {
-    var html, result, source, template;
-    result = $('#json-test').html();
-    result = result.replace(/\\n/g, "");
-    result = JSON.parse(result);
-    console.log(result);
-    source = $('#entry-template').html();
+  /*
+  $ ->
+    # for testing
+    result = $('#json-test').html()
+    result = result.replace(/\\n/g,"")
+    result = JSON.parse(result)
+    console.log result
+    # end of testing code
+    source = $('#entry-template').html()
+    source = source.replace(/\\n/g,"")
+    template = Handlebars.compile(source)
+    #context = {title: "handle bar title",body: "handlebar body"}
+    html = template(result)
+    $('body').append(html)
+  # Socket connection
+  */
+  var socket, template;
+  socket = io.connect("http://localhost");
+  template = function(id, data) {
+    var html, source;
+    source = $(id).html();
     source = source.replace(/\\n/g, "");
     template = Handlebars.compile(source);
-    html = template(result);
+    html = template(data);
+    return $('body').append(html);
+  };
+  socket.on('news', function(data) {});
+  socket.on('comments', function(data) {
+    var html, source;
+    console.log(data);
+    source = $("#comment-template").html();
+    source = source.replace(/\\n/g, "");
+    template = Handlebars.compile(source);
+    html = template(data);
     return $('body').append(html);
   });
-  /*
-  socket = io.connect "http://localhost"
-  
-  socket.on 'news', (data) ->
-    console.log data
-    source = $('#entry-template').html()
-    source = source.replace('/n','')
-    template = Handlebars.compile(source)
-    context = {title: "handle bar title",body: "handlebar body"}
-    html = template(context)
-    $('body').append(html)
-  */
 }).call(this);
