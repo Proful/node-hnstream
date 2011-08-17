@@ -1,16 +1,14 @@
 (function() {
   $(function() {
-    var context, html, source, template;
+    var html, result, source, template;
+    result = $('#json-test').html();
+    result = result.replace(/\\n/g, "");
+    result = JSON.parse(result);
+    console.log(result);
     source = $('#entry-template').html();
-    console.log(source);
     source = source.replace(/\\n/g, "");
-    console.log(source);
     template = Handlebars.compile(source);
-    context = {
-      title: "handle bar title",
-      body: "handlebar body"
-    };
-    html = template(context);
+    html = template(result);
     return $('body').append(html);
   });
   /*

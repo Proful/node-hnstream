@@ -1,11 +1,15 @@
 $ ->
+  # for testing
+  result = $('#json-test').html()
+  result = result.replace(/\\n/g,"")
+  result = JSON.parse(result)
+  console.log result
+  # end of testing code
   source = $('#entry-template').html()
-  console.log source
   source = source.replace(/\\n/g,"")
-  console.log source
   template = Handlebars.compile(source)
-  context = {title: "handle bar title",body: "handlebar body"}
-  html = template(context)
+  #context = {title: "handle bar title",body: "handlebar body"}
+  html = template(result)
   $('body').append(html)
 # Socket connection
 ###
